@@ -1,25 +1,56 @@
 
-Installation information
-=======
+The Veil Mod
+Description: Proof of Concept Minecraft Mod made by Tristan Anderson
+Copyright (c) 2025 Tristan Anderson
+Licensed under the MIT License
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+theveil/
+├─ build/                            # Generated/compiled output
+├─ gradle/                           # Gradle wrapper
+│   └─ wrapper/
+├─ src/
+│   └─ main/
+│       ├─ java/
+│       │   └─ com/
+│       │       └─ trist79/
+│       │           └─ veil/
+│       │               ├─ TheVeilMod.java         # Main mod class
+│       │               ├─ common/
+│       │               │   ├─ blocks/             # Custom block classes
+│       │               │   ├─ items/              # Custom items
+│       │               │   ├─ entities/           # Entities/mobs
+│       │               │   ├─ fluids/             # Custom fluids
+│       │               │   ├─ data/               # Data generators
+│       │               │   │   ├─ DataGenerators.java
+│       │               │   │   ├─ loot/           # Loot table providers
+│       │               │   │   │   ├─ VeilLootTableProvider.java
+│       │               │   │   │   └─ subproviders/    # Subproviders for loot tables
+│       │               │   │   │       └─ SomeSubLootProvider.java
+│       │               │   │   ├─ recipes/        # Recipe providers
+│       │               │   │   │   └─ VeilRecipeProvider.java
+│       │               │   │   ├─ tags/           # Tag providers
+│       │               │   │   │   └─ VeilTagProvider.java
+│       │               │   │   └─ models/         # Optional: model data generators
+│       │               │   └─ util/               # Utilities, helpers
+│       │               └─ client/                  # Client-only classes (renderers, GUIs)
+│       │                   ├─ render/
+│       │                   └─ gui/
+│       └─ resources/
+│           ├─ assets/
+│           │   └─ theveil/
+│           │       ├─ blockstates/
+│           │       ├─ models/
+│           │       │   ├─ block/
+│           │       │   └─ item/
+│           │       ├─ textures/
+│           │       │   ├─ block/
+│           │       │   └─ item/
+│           │       └─ lang/
+│           └─ data/
+│               └─ theveil/
+│                   ├─ loot_tables/
+│                   ├─ recipes/
+│                   ├─ tags/
+│
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
-
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
-
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/

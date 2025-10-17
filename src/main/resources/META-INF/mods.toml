@@ -1,0 +1,16 @@
+modLoader="neoforged"
+loaderVersion="[2.0,)"
+license="MIT"
+
+[[mods]]
+modId="theveil"
+version="0.0.1"
+displayName="The Veil"
+description='Step into The Veil, a mysterious, ever-shifting dimension filled with echoes, illusions, and hidden secrets.'
+authors="Tristan Anderson"
+
+entrypoints {
+    "main" = ["com.trist79.veil.TheVeilMod"]
+    "client" = ["com.trist79.veil.TheVeilModClient"]
+    "data" = ["com.trist79.veil.common.data.VeilDataGenerators"]
+}
