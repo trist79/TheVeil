@@ -13,15 +13,17 @@ import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import com.trist79.veil.common.data.VeilDataGenerators;
 
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
-@NeoForgeMod
+@Mod(value = TheVeilMod.MODID, dist = Dist.DEDICATED_SERVER)
 public class TheVeilMod {
 
     public static final String MODID = "theveil";
