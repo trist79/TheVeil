@@ -10,7 +10,7 @@
 @MethodsReturnNonnullByDefault
 @FieldsAreNonnullByDefault
 
-package com.trist79.veil.common.world;
+package com.trist79.veil.common;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

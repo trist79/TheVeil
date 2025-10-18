@@ -10,12 +10,8 @@ package com.trist79.veil.common.world;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Function;
-
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.WorldGenRegion;
@@ -23,8 +19,6 @@ import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.block.Blocks;
@@ -32,13 +26,23 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
+import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.blending.Blender;
 
-public class VeilChunkGenerator extends ChunkGenerator {
+public class VeilChunkGenerator extends NoiseBasedChunkGenerator {
 
-    public VeilChunkGenerator(BiomeSource biomeSource, Function<Holder<Biome>, BiomeGenerationSettings> generationSettingsGetter) {
-        super(biomeSource, generationSettingsGetter);
+    public static final MapCodec<VeilChunkGenerator> CODEC = RecordCodecBuilder.mapCodec(instance ->
+            instance.group(
+                    BiomeSource.CODEC.fieldOf("biome_source").forGetter(gen -> gen.biomeSource),
+                    NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(gen -> gen.settings)
+            ).apply(instance, VeilChunkGenerator::new)
+    );
+    private final Holder<NoiseGeneratorSettings> settings;
+    public VeilChunkGenerator(BiomeSource biomeSource, Holder<NoiseGeneratorSettings> noiseSettings) {
+        super(biomeSource, noiseSettings);
+        this.settings = noiseSettings;
     }
 
     @Override
@@ -70,17 +74,6 @@ public class VeilChunkGenerator extends ChunkGenerator {
         // no carvers
     }
 
-    public static final MapCodec<VeilChunkGenerator> CODEC = RecordCodecBuilder.mapCodec(instance ->
-        instance.group(
-            BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource),
-            // Dummy placeholders; they are required to match the JSON structure
-            Codec.INT.optionalFieldOf("sea_level", 0).forGetter(g -> 0),
-            Codec.INT.optionalFieldOf("world_height", 256).forGetter(g -> 256),
-            Codec.STRING.optionalFieldOf("stone", "minecraft:stone").forGetter(g -> "minecraft:stone")
-        ).apply(instance, (biomeSource, sea, height, stone) ->
-            new VeilChunkGenerator(biomeSource, b -> null) // your original constructor
-        )
-    );
 
     @Override
     protected MapCodec<? extends ChunkGenerator> codec() {
