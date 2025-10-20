@@ -21,7 +21,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -38,28 +37,26 @@ public class VeilDataGenerators {
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
-        ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
-        // Add Providers
+        ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         generator.addProvider(event.includeServer(), new VeilRecipeProvider(output, provider));
         generator.addProvider(event.includeServer(), new VeilLootTableProvider(output, provider));
         generator.addProvider(event.includeServer(), new VeilBlockTagsProvider(output, provider, existingFileHelper));
 
         RegistrySetBuilder builder = new RegistrySetBuilder()
-                .add(Registries.LEVEL_STEM, VeilDimension::bootstrapLevelStem)
-                .add(Registries.DIMENSION_TYPE, VeilDimension::bootstrapDimType)
-                .add(Registries.BIOME, VeilDimension::bootstrapBiomes);
+            .add(Registries.DIMENSION_TYPE, VeilDimension::bootstrapDimType)
+            .add(Registries.BIOME, VeilDimension::bootstrapBiomes)
+            .add(Registries.NOISE_SETTINGS, VeilDimension::bootstrapNoiseSettings)
+            .add(Registries.LEVEL_STEM, VeilDimension::bootstrapLevelStem);
 
-        generator.addProvider(event.includeServer(), new DataProvider.Factory<DatapackBuiltinEntriesProvider>() {
-        @Override
-        public DatapackBuiltinEntriesProvider create(PackOutput packOutput) {
-            return new DatapackBuiltinEntriesProvider(
-                packOutput,
+        generator.addProvider(
+            true, // includeServer
+            new DatapackBuiltinEntriesProvider(
+                output,
                 provider,
                 builder,
                 Set.of(TheVeilMod.MODID)
-            );
-        }
-});
+            )
+        );
     }
 }

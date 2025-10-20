@@ -1,0 +1,11 @@
+{
+  "type": "theveil:veil_dim_type",
+  "generator": {
+    "type": "minecraft:noise",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "theveil:veil_biome_1"
+    },
+    "settings": "theveil:veil_noise_gen"
+  }
+}

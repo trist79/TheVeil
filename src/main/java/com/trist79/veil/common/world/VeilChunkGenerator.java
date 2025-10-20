@@ -10,6 +10,10 @@ package com.trist79.veil.common.world;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -33,12 +37,16 @@ import net.minecraft.world.level.levelgen.blending.Blender;
 
 public class VeilChunkGenerator extends NoiseBasedChunkGenerator {
 
-    public static final MapCodec<VeilChunkGenerator> CODEC = RecordCodecBuilder.mapCodec(instance ->
-            instance.group(
-                    BiomeSource.CODEC.fieldOf("biome_source").forGetter(gen -> gen.biomeSource),
-                    NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(gen -> gen.settings)
-            ).apply(instance, VeilChunkGenerator::new)
+    public static final MapCodec<VeilChunkGenerator> CODEC = RecordCodecBuilder.mapCodec(
+        instance -> instance.group(
+            BiomeSource.CODEC.fieldOf("biome_source").forGetter(gen -> gen.biomeSource),
+            NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(gen -> gen.settings)
+        ).apply(instance, VeilChunkGenerator::new)
     );
+
+    public static final Supplier<Codec<VeilChunkGenerator>> RUNTIME_CODEC =
+        Suppliers.memoize(() -> CODEC.codec());
+
     private final Holder<NoiseGeneratorSettings> settings;
     public VeilChunkGenerator(BiomeSource biomeSource, Holder<NoiseGeneratorSettings> noiseSettings) {
         super(biomeSource, noiseSettings);
@@ -77,7 +85,7 @@ public class VeilChunkGenerator extends NoiseBasedChunkGenerator {
 
     @Override
     protected MapCodec<? extends ChunkGenerator> codec() {
-        return (MapCodec<? extends ChunkGenerator>) CODEC;
+        return  CODEC;
     }
 
     @Override
