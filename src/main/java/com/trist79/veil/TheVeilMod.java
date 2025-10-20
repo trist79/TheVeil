@@ -13,6 +13,11 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 import com.trist79.veil.common.data.VeilDataGenerators;
+import com.trist79.veil.common.world.VeilDimensionRegistry;
+
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.server.MinecraftServer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -34,7 +39,6 @@ public class TheVeilMod {
         modEventBus.addListener(VeilDataGenerators::gatherData);
         NeoForge.EVENT_BUS.register(this);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
-
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -42,10 +46,11 @@ public class TheVeilMod {
         LOGGER.info("HELLO FROM COMMON SETUP");
     }
 
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-        //var server = event.getServer();
-
+        MinecraftServer server = event.getServer();
+        TheVeilMod.LOGGER.info("The Veil: Server starting — registering Veil dimension...");
+        VeilDimensionRegistry.registerVeilDimensionRuntime(server);
     }
 }
+
