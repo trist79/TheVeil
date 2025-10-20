@@ -49,3 +49,7 @@ Version History:
 0.0.1 10/17/2025 - Initial Version
 0.0.2 10/20/2025 - Successful Veil Dimension Generaration
 0.0.3 10/20/2025 - Crystallized Chorus Fruit Teleportation
+
+Temporary Assets and Textures courtesy of:
+
+https://glionox.itch.io/items16
