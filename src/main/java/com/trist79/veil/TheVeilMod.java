@@ -15,16 +15,15 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Lifecycle;
+import com.trist79.veil.common.registry.VeilItemRegistry;
 import com.trist79.veil.common.world.VeilDimension;
 import com.trist79.veil.common.world.VeilDimensionRegistry;
 
 import net.minecraft.core.RegistrationInfo;
 import net.minecraft.core.WritableRegistry;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.LevelSettings;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -46,7 +45,7 @@ public class TheVeilMod {
         modEventBus.addListener(this::commonSetup);
         //modEventBus.addListener(VeilDataGenerators::gatherData);
         //NeoForge.EVENT_BUS.register(this);
-
+        VeilItemRegistry.register(modEventBus);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
@@ -70,7 +69,6 @@ public class TheVeilMod {
         LevelStem runtimeStem = VeilDimension.bootstrapRuntimeStem(overworld);
         // Register the stem at runtime
         RegistrationInfo runtimeInfo = new RegistrationInfo(Optional.empty(), Lifecycle.stable());
-
         stemRegistry.register(
                 VeilDimensionRegistry.THE_VEIL_STEM,
                 runtimeStem,
@@ -80,6 +78,9 @@ public class TheVeilMod {
         System.out.println("Veil dimension stem registered at runtime!");
 
         System.out.println("Veil dimension stem registered at runtime!");
+
+
+
         if (server.getLevel(VeilDimensionRegistry.VEIL_DIM) != null) {
             TheVeilMod.LOGGER.info("✅ Veil dimension loaded successfully.");
         } else {

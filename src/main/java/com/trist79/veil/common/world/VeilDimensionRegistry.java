@@ -11,11 +11,9 @@ package com.trist79.veil.common.world;
 import com.mojang.serialization.MapCodec;
 import com.trist79.veil.TheVeilMod;
 
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkGenerator;

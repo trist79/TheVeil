@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "theveil:item/crystallized_chorus_fruit"
+  }
+}

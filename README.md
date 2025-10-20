@@ -1,10 +1,10 @@
 # The Veil Mod
 
-**Description:** Proof of Concept Minecraft Mod made by Tristan Anderson  
+**Description:** Proof of Concept Minecraft Mod made by Tristan Anderson
 
-**Copyright:** © 2025 Tristan Anderson  
+**Copyright:** © 2025 Tristan Anderson
 
-**License:** [MIT License](https://opensource.org/licenses/MIT)  
+**License:** [MIT License](https://opensource.org/licenses/MIT)
 ```text
 ├📁theveil/
 ├── 📁 src/
@@ -44,3 +44,8 @@
 │ │ │ └── 📁 META-INF/
 │ │ │ └── neoforge.mods.toml ✅ Mod metadata
 ├── 📁 Base Repo Files, Gradle Scripts
+
+Version History:
+0.0.1 10/17/2025 - Initial Version
+0.0.2 10/20/2025 - Successful Veil Dimension Generaration
+0.0.3 10/20/2025 - Crystallized Chorus Fruit Teleportation
