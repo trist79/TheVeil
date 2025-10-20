@@ -17,18 +17,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootTable;
 
 import com.trist79.veil.TheVeilMod;
-
 public class VeilRegistry {
-    // Example block tag
     public static final TagKey<Block> VEIL = TagKey.create(
-        Registries.BLOCK,
-        ResourceLocation.fromNamespaceAndPath(TheVeilMod.MODID, "veil_tag")
+        Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(TheVeilMod.MODID, "veil_tag")
     );
 
-    // Example loot table key
-    public static final ResourceKey<LootTable> TEST_DUNGEON_LOOT =
-        ResourceKey.create(
-            Registries.LOOT_TABLE,
-            ResourceLocation.fromNamespaceAndPath(TheVeilMod.MODID, "dungeon/test_dungeon_loot_table")
-        );
+    public static final ResourceKey<LootTable> TEST_DUNGEON_LOOT = ResourceKey.create(
+        Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(TheVeilMod.MODID, "dungeon/test_dungeon_loot_table")
+    );
+
 }
