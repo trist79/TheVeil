@@ -1,54 +1,46 @@
-```text
-The Veil Mod
-Description: Proof of Concept Minecraft Mod made by Tristan Anderson
-Copyright (c) 2025 Tristan Anderson
-Licensed under the MIT License
+# The Veil Mod
 
-theveil/
-├─ build/ # Generated/compiled output
-├─ gradle/ # Gradle wrapper
-│ └─ wrapper/
-├─ src/
-│ └─ main/
-│ ├─ java/
-│ │ └─ com/
-│ │ └─ trist79/
-│ │ └─ veil/
-│ │ ├─ TheVeilMod.java # Main mod class
-│ │ ├─ common/
-│ │ │ ├─ blocks/ # Custom block classes
-│ │ │ ├─ items/ # Custom items
-│ │ │ ├─ entities/ # Entities/mobs
-│ │ │ ├─ fluids/ # Custom fluids
-│ │ │ ├─ data/ # Data generators
-│ │ │ │ ├─ DataGenerators.java
-│ │ │ │ ├─ loot/ # Loot table providers
-│ │ │ │ │ ├─ VeilLootTableProvider.java
-│ │ │ │ │ └─ subproviders/
-│ │ │ │ │ └─ SomeSubLootProvider.java
-│ │ │ │ ├─ recipes/ # Recipe providers
-│ │ │ │ │ └─ VeilRecipeProvider.java
-│ │ │ │ ├─ tags/ # Tag providers
-│ │ │ │ │ └─ VeilTagProvider.java
-│ │ │ │ └─ models/ # Optional: model data generators
-│ │ │ └─ util/ # Utilities, helpers
-│ │ └─ client/ # Client-only classes (renderers, GUIs)
-│ │ ├─ render/
-│ │ └─ gui/
-│ └─ resources/
-│ ├─ assets/
-│ │ └─ theveil/
-│ │ ├─ blockstates/
-│ │ ├─ models/
-│ │ │ ├─ block/
-│ │ │ └─ item/
-│ │ ├─ textures/
-│ │ │ ├─ block/
-│ │ │ └─ item/
-│ │ └─ lang/
-│ └─ data/
-│ └─ theveil/
-│ ├─ loot_tables/
-│ ├─ recipes/
-│ └─ tags/
-```
+**Description:** Proof of Concept Minecraft Mod made by Tristan Anderson  
+
+**Copyright:** © 2025 Tristan Anderson  
+
+**License:** [MIT License](https://opensource.org/licenses/MIT)  
+```text
+├📁theveil/
+├── 📁 src/
+│ ├── 📁 generated/resources/data/
+│ │ ├── 📁 minecraft/ 🔹 Overwritten Minecraft JSONs go here
+│ │ └── 📁 theveil/ 🔹 RunData-generated Veil Mod JSONs go here
+│ ├── 📁 main/
+│ │ ├── 📁 java/com/trist79/veil/
+│ │ │ ├── 📁 common/
+│ │ │ │ ├── 📁 blocks/ ✅ Java block classes
+│ │ │ │ ├── 📁 data/
+│ │ │ │ │ ├── 📁 loot/
+│ │ │ │ │ │ ├── 📁 subproviders/
+│ │ │ │ │ │ │ └── TestDungeonLootSubProvider.java ✅
+│ │ │ │ │ │ └── VeilLootTableProvider.java ✅
+│ │ │ │ │ ├── 📁 tags/
+│ │ │ │ │ │ ├── VeilBlockTagsProvider.java ✅
+│ │ │ │ │ │ ├── VeilDataGenerators.java ✅
+│ │ │ │ │ │ └── VeilRecipeProvider.java ✅
+│ │ │ │ ├── 📁 entities/ ✅ Entity classes
+│ │ │ │ ├── 📁 items/ ✅ Item classes
+│ │ │ │ └── 📁 registry/
+│ │ │ │ └── VeilRegistry.java ✅
+│ │ │ │ └── 📁 util/ ✅ Utility classes
+│ │ │ │ └── 📁 world/
+│ │ │ │ ├── VeilChunkGenerator.java ✅
+│ │ │ │ ├── VeilDimension.java ✅
+│ │ │ │ ├── VeilDimensionRegistry.java ✅
+│ │ │ │ └── VeilTeleporter.java ✅
+│ │ │ │ ├── package-info.java ✅
+│ │ │ │ ├── Config.java ✅
+│ │ │ │ ├── TheVeilMod.java ✅
+│ │ │ │ └── TheVeilModClient.java ✅
+│ │ ├── 📁 resources/
+│ │ │ ├── 📁 assets/ 🔹 Currently unused; will house non-code assets like textures, models, etc
+│ │ │ ├── 📁 data/ 🔹 Currently unused; will house manually edited data files
+│ │ │ └── 📁 META-INF/
+│ │ │ └── neoforge.mods.toml ✅ Mod metadata
+├── 📁 Base Repo Files, Gradle Scripts
