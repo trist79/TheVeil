@@ -4,7 +4,7 @@ license="MIT"
 
 [[mods]]
 modId="theveil"
-version="0.0.2"
+version="0.0.3"
 displayName="The Veil"
 description='Step into The Veil, a mysterious, ever-shifting dimension filled with echoes, illusions, and hidden secrets.'
 authors="Tristan Anderson"

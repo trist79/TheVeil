@@ -11,11 +11,9 @@ package com.trist79.veil.common.world;
 import com.mojang.serialization.MapCodec;
 import com.trist79.veil.TheVeilMod;
 
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -26,7 +24,7 @@ import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 public class VeilDimensionRegistry {
 
     public static final ResourceKey<Level> VEIL_DIM = ResourceKey.create(
-        Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(TheVeilMod.MODID, "veil_dim")
+        Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(TheVeilMod.MODID, "the_veil")
     );
 
     public static final ResourceKey<DimensionType> THE_VEIL_DIM_TYPE = ResourceKey.create(

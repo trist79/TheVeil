@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import com.trist79.veil.TheVeilMod;
+import com.trist79.veil.common.data.items.VeilItemModelProvider;
 import com.trist79.veil.common.data.loot.VeilLootTableProvider;
 import com.trist79.veil.common.data.tags.VeilBlockTagsProvider;
 import com.trist79.veil.common.world.VeilDimension;
@@ -42,6 +43,9 @@ public class VeilDataGenerators {
         generator.addProvider(event.includeServer(), new VeilRecipeProvider(output, provider));
         generator.addProvider(event.includeServer(), new VeilLootTableProvider(output, provider));
         generator.addProvider(event.includeServer(), new VeilBlockTagsProvider(output, provider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new VeilItemModelProvider(output, existingFileHelper));
+        generator.addProvider(event.includeServer(), new VeilLangProvider(output, TheVeilMod.MODID, net.minecraft.locale.Language.DEFAULT));
+
 
         RegistrySetBuilder builder = new RegistrySetBuilder()
             .add(Registries.DIMENSION_TYPE, VeilDimension::bootstrapDimType)

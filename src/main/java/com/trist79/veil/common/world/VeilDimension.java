@@ -51,7 +51,7 @@ public class VeilDimension {
             OptionalLong.empty(), //fixedTime
             false, //hasSkyLight
             true, //hasCeiling
-            true, //ultraWarm
+            false, //ultraWarm
             false, //natural
             1.0, //coordinateScale
             false, //bedWorks
@@ -101,7 +101,7 @@ public class VeilDimension {
         Holder<Biome> biomeHolder = biomes.getOrThrow(VeilDimensionRegistry.VEIL_BIOME_1);
         Holder<NoiseGeneratorSettings> noiseHolder = noiseSettings.getOrThrow(VeilDimensionRegistry.VOID_NOISE_GEN_KEY);
 
-        FixedBiomeSource biomeSource = new FixedBiomeSource(biomeHolder);
+        //FixedBiomeSource biomeSource = new FixedBiomeSource(biomeHolder);
         //VeilChunkGenerator chunkGenerator = new VeilChunkGenerator(biomeSource, noiseHolder);
 
 
