@@ -38,7 +38,7 @@ public class TheVeilMod {
     public static final String MODID = "theveil";
     public static final Logger LOGGER = LogUtils.getLogger();
     static {
-        System.out.println("STATIC BLOCK IN THE VEIL MOD FIRED");
+        LOGGER.info("STATIC BLOCK IN THE VEIL MOD FIRED");
     }
     public TheVeilMod(IEventBus modEventBus, ModContainer modContainer) {
 

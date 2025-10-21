@@ -24,7 +24,7 @@ import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 public class VeilDimensionRegistry {
 
     public static final ResourceKey<Level> VEIL_DIM = ResourceKey.create(
-        Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(TheVeilMod.MODID, "veil_dim")
+        Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(TheVeilMod.MODID, "the_veil")
     );
 
     public static final ResourceKey<DimensionType> THE_VEIL_DIM_TYPE = ResourceKey.create(
