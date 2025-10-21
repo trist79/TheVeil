@@ -38,7 +38,7 @@ public class TheVeilMod {
     public static final String MODID = "theveil";
     public static final Logger LOGGER = LogUtils.getLogger();
     static {
-        LOGGER.info("STATIC BLOCK IN THE VEIL MOD FIRED");
+        LOGGER.info("Veil Mod Initializing...");
     }
     public TheVeilMod(IEventBus modEventBus, ModContainer modContainer) {
 
@@ -51,7 +51,7 @@ public class TheVeilMod {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         // Some common setup code
-        LOGGER.info("HELLO FROM COMMON SETUP");
+        LOGGER.info("Veil Mod Common Setup Starting");
     }
 
     @SubscribeEvent
@@ -60,12 +60,10 @@ public class TheVeilMod {
         WritableRegistry<LevelStem> stemRegistry = (WritableRegistry<LevelStem>) server.registryAccess().registryOrThrow(Registries.LEVEL_STEM);
 
         if (stemRegistry.get(VeilDimensionRegistry.THE_VEIL_STEM.location()) != null) {
-            System.out.println("Veil stem already registered.");
             return;
         }
 
-        // Use your bootstrap method to create the LevelStem
-        ServerLevel overworld = server.getLevel(server.overworld().dimension()); // just need any server level
+        ServerLevel overworld = server.getLevel(server.overworld().dimension());
         LevelStem runtimeStem = VeilDimension.bootstrapRuntimeStem(overworld);
         // Register the stem at runtime
         RegistrationInfo runtimeInfo = new RegistrationInfo(Optional.empty(), Lifecycle.stable());
@@ -74,18 +72,6 @@ public class TheVeilMod {
                 runtimeStem,
                 runtimeInfo
         );
-
-        System.out.println("Veil dimension stem registered at runtime!");
-
-        System.out.println("Veil dimension stem registered at runtime!");
-
-
-
-        if (server.getLevel(VeilDimensionRegistry.VEIL_DIM) != null) {
-            TheVeilMod.LOGGER.info("✅ Veil dimension loaded successfully.");
-        } else {
-            TheVeilMod.LOGGER.error("❌ Veil dimension missing! Check your datapack output.");
-        }
     }
 }
 

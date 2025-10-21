@@ -6,19 +6,11 @@
  * Licensed under the MIT License
  */
 
-
 package com.trist79.veil.common.items.food;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import com.trist79.veil.TheVeilMod;
 import com.trist79.veil.common.world.VeilDimensionRegistry;
 import com.trist79.veil.common.world.VeilTeleporter;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,7 +28,6 @@ public class CrystallizedChorusFruit extends Item {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity entity) {
-        CompoundTag data = entity.getPersistentData();
         if (!world.isClientSide) {
             if (entity instanceof Player player) {
                 ResourceKey<Level> dimensionKey = player.level().dimension();

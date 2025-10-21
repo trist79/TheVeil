@@ -7,9 +7,6 @@
  */
 
 package com.trist79.veil.common.world;
-
-import java.util.List;
-
 import com.trist79.veil.TheVeilMod;
 
 import net.minecraft.core.BlockPos;
@@ -26,13 +23,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.portal.DimensionTransition;
-import net.minecraft.world.level.portal.DimensionTransition.PostDimensionTransition;
 import net.minecraft.world.phys.Vec3;
 
 public class VeilTeleporter {
-
     private final ServerLevel destinationWorld;
-
     public VeilTeleporter(ServerLevel destinationWorld) {
         this.destinationWorld = destinationWorld;
     }
@@ -48,16 +42,7 @@ public class VeilTeleporter {
             );
     }
 
-
-
-    /**
-     * Teleports an entity to the Veil dimension.
-     * @param entity The entity to teleport
-     * @param currentWorld The world the entity is currently in
-     * @param yaw The yaw rotation to apply
-     * @param targetPos Optional target position. If null, uses the destination world's spawn
-     * @return The teleported entity
-     */
+    //Teleports a player from their current dimension to the veil, or from the veil to their previous dimension
     public Entity placeEntity(Entity entity, ServerLevel world, float yaw, Vec3 targetPos) {
 
         CompoundTag data = entity.getPersistentData();
@@ -103,7 +88,6 @@ public class VeilTeleporter {
                     SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0f, 1.0f);
             }
         };
-        entity.unRide();
         if (entity instanceof ServerPlayer player) {
             player.changeDimension(new DimensionTransition(destinationWorld, targetPos, finalPos, yaw, 0, false, postTransition));
             player.setYRot(yaw);

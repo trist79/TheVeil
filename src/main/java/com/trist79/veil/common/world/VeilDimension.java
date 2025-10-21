@@ -51,7 +51,7 @@ public class VeilDimension {
             OptionalLong.empty(), //fixedTime
             false, //hasSkyLight
             true, //hasCeiling
-            true, //ultraWarm
+            false, //ultraWarm
             false, //natural
             1.0, //coordinateScale
             false, //bedWorks

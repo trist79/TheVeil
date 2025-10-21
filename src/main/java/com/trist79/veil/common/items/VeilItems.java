@@ -9,9 +9,5 @@ package com.trist79.veil.common.items;
 import net.minecraft.world.food.FoodProperties;
 
 public class VeilItems {
-    public static final FoodProperties crystallizedChorusFruitProperties = new FoodProperties.Builder().nutrition(6).saturationModifier(0.8f).alwaysEdible().build();
-/*     public static void registerVeilItemsRuntime()
-    {
-        //Item crystallizedChorusFruit = VeilItemRegistry.CRYSTALLIZED_CHORUS_FRUIT.get();
-    } */
+    public static final FoodProperties crystallizedChorusFruitProperties = new FoodProperties.Builder().nutrition(1).saturationModifier(0.2f).alwaysEdible().build();
 }
