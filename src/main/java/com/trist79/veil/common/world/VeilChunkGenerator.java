@@ -16,6 +16,9 @@ import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.trist79.veil.common.data.blocks.VeilBlocks;
+import com.trist79.veil.common.world.biomes.CrystalPeatlands;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.WorldGenRegion;
@@ -33,6 +36,8 @@ import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.RandomState;
+import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.world.level.levelgen.SurfaceSystem;
 import net.minecraft.world.level.levelgen.blending.Blender;
 
 public class VeilChunkGenerator extends NoiseBasedChunkGenerator {
@@ -54,24 +59,9 @@ public class VeilChunkGenerator extends NoiseBasedChunkGenerator {
     }
 
     @Override
-    public void buildSurface(WorldGenRegion level, StructureManager structureManager, RandomState random, ChunkAccess chunk) {
-        // Get the world-space base position of this chunk
-        int chunkX = chunk.getPos().getMinBlockX();
-        int chunkZ = chunk.getPos().getMinBlockZ();
-
-        int surfaceY = level.getMinBuildHeight(); // Usually 0, but read from level
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
-                // Place a single bedrock block at the base level
-                chunk.setBlockState(
-                    new net.minecraft.core.BlockPos(chunkX + x, surfaceY, chunkZ + z),
-                    net.minecraft.world.level.block.Blocks.BEDROCK.defaultBlockState(),
-                    false
-                );
-            }
-        }
+    public void buildSurface(WorldGenRegion region, StructureManager structureManager, RandomState random, ChunkAccess chunk) {
+        // nothing yet
     }
-
     @Override
     public void applyBiomeDecoration(WorldGenLevel level, ChunkAccess chunk, StructureManager structureManager) {
         // no decorations
@@ -110,7 +100,7 @@ public class VeilChunkGenerator extends NoiseBasedChunkGenerator {
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
                 chunk.setBlockState(
-                    new BlockPos(chunkX + x, minY, chunkZ + z),
+                    new BlockPos(chunkX + x, minY + 1, chunkZ + z),
                     Blocks.BEDROCK.defaultBlockState(),
                     false
                 );
@@ -139,22 +129,25 @@ public class VeilChunkGenerator extends NoiseBasedChunkGenerator {
     }
 
     @Override
-public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor height, RandomState random) {
-    int minY = height.getMinBuildHeight();
-    int maxY = height.getMaxBuildHeight();
+    public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor height, RandomState random) {
+        int minY = height.getMinBuildHeight();
+        int maxY = height.getMaxBuildHeight();
+        int heightSize = maxY - minY;
 
-    // Create a column array
-    var blocks = new net.minecraft.world.level.block.state.BlockState[maxY - minY];
+        // Create a block array
+        var blocks = new net.minecraft.world.level.block.state.BlockState[heightSize];
 
-    // Bedrock at bottom
-    blocks[0] = Blocks.BEDROCK.defaultBlockState();
+        // Bedrock at bottom
+        blocks[0] = Blocks.BEDROCK.defaultBlockState();
 
-    // Everything else is air
-    for (int i = 1; i < blocks.length; i++) {
-        blocks[i] = Blocks.AIR.defaultBlockState();
+        // Fill the rest with your base terrain (Veilstone)
+        for (int y = 1; y < heightSize; y++) {
+            blocks[y] = VeilBlocks.VEILSTONE.get().defaultBlockState();
+        }
+
+        return new NoiseColumn(minY, blocks);
     }
-    return new NoiseColumn(minY, blocks);
-}
+
 
     @Override
     public void addDebugScreenInfo(List<String> info, RandomState random, BlockPos pos) {

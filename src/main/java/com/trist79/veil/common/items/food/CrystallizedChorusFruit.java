@@ -7,11 +7,13 @@
  */
 
 package com.trist79.veil.common.items.food;
+
 import com.trist79.veil.common.world.VeilDimensionRegistry;
 import com.trist79.veil.common.world.VeilTeleporter;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -31,8 +33,10 @@ public class CrystallizedChorusFruit extends Item {
         if (!world.isClientSide) {
             if (entity instanceof Player player) {
                 ResourceKey<Level> dimensionKey = player.level().dimension();
-                ServerLevel veilWorld = player.getServer().getLevel(VeilDimensionRegistry.VEIL_DIM);
-                ServerLevel currentDimension = player.getServer().getLevel(dimensionKey);
+                MinecraftServer server = player.getServer();
+                if(server == null) return super.finishUsingItem(stack, world, entity);
+                ServerLevel veilWorld =  server.getLevel(VeilDimensionRegistry.VEIL_DIM);
+                ServerLevel currentDimension = server.getLevel(dimensionKey);
                 if (veilWorld != null) {
                     BlockPos spawnPos = veilWorld.getSharedSpawnPos();
                     Vec3 targetPos = new Vec3(

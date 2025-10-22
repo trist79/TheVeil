@@ -14,7 +14,11 @@ import java.util.OptionalLong;
 
 import com.mojang.serialization.MapCodec;
 import com.trist79.veil.TheVeilMod;
+import com.trist79.veil.common.data.blocks.VeilBlocks;
+import com.trist79.veil.common.world.biomes.CrystalPeatlands;
 
+import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.client.renderer.DimensionSpecialEffects.SkyType;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.RegistryAccess;
@@ -33,12 +37,14 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.DimensionType.MonsterSettings;
 import net.minecraft.world.level.dimension.LevelStem;
+import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.NoiseRouter;
 import net.minecraft.world.level.levelgen.NoiseSettings;
-import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.world.level.levelgen.Noises;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.material.Fluids;
 
 public class VeilDimension {
@@ -61,7 +67,7 @@ public class VeilDimension {
             256, //logicalHeight
             net.minecraft.tags.BlockTags.INFINIBURN_OVERWORLD, //infiniburn
             ResourceLocation.fromNamespaceAndPath(TheVeilMod.MODID, "the_veil"), //effectsLocation
-            0.0f, //ambientLight
+            0.25f, //ambientLight
             veilMonsterSettings //DimensionType.MonsterSettings
         );
     }
@@ -77,7 +83,7 @@ public class VeilDimension {
 
         Holder<Biome> biomeHolder = level.registryAccess()
             .registryOrThrow(Registries.BIOME)
-            .getHolder(VeilDimensionRegistry.VEIL_BIOME_1).orElseThrow();
+            .getHolder(VeilDimensionRegistry.CRYSTAL_PEATLANDS_BIOME).orElseThrow();
 
         Holder<NoiseGeneratorSettings> noiseHolder = level.registryAccess()
             .registryOrThrow(Registries.NOISE_SETTINGS)
@@ -98,7 +104,7 @@ public class VeilDimension {
 
 
         Holder<DimensionType> typeHolder = dimTypes.getOrThrow(VeilDimensionRegistry.THE_VEIL_DIM_TYPE);
-        Holder<Biome> biomeHolder = biomes.getOrThrow(VeilDimensionRegistry.VEIL_BIOME_1);
+        Holder<Biome> biomeHolder = biomes.getOrThrow(VeilDimensionRegistry.CRYSTAL_PEATLANDS_BIOME);
         Holder<NoiseGeneratorSettings> noiseHolder = noiseSettings.getOrThrow(VeilDimensionRegistry.VOID_NOISE_GEN_KEY);
 
         //FixedBiomeSource biomeSource = new FixedBiomeSource(biomeHolder);
@@ -115,7 +121,6 @@ public class VeilDimension {
         context.register(VeilDimensionRegistry.THE_VEIL_STEM, stem);
     }
 
-
     public static void bootstrapBiomes(BootstrapContext<Biome> context) {
         HolderGetter<net.minecraft.world.level.levelgen.placement.PlacedFeature> placedFeatures =
             context.lookup(Registries.PLACED_FEATURE);
@@ -123,11 +128,12 @@ public class VeilDimension {
             context.lookup(Registries.CONFIGURED_CARVER);
         BiomeGenerationSettings generationSettings =
             new BiomeGenerationSettings.Builder(placedFeatures, carvers).build();
+
         BiomeSpecialEffects effects = new BiomeSpecialEffects.Builder()
             .fogColor(12638463)           // default plain fog
             .waterColor(4159204)          // default plain water
             .waterFogColor(329011)        // default water fog
-            .skyColor(calculateSkyColor(0.8F)) // temperature-based sky color
+            .skyColor(0x6A0DAD) // temperature-based sky color
             .build();
         // Example: create a simple biome
         Biome biome = new Biome.BiomeBuilder()
@@ -138,7 +144,7 @@ public class VeilDimension {
             .generationSettings(generationSettings)
             .specialEffects(effects) // Add BiomeSpecialEffects if needed
             .build();
-        context.register(VeilDimensionRegistry.VEIL_BIOME_1, biome);
+        context.register(VeilDimensionRegistry.CRYSTAL_PEATLANDS_BIOME, biome);
     }
 
     public static void bootstrapChunkGen(BootstrapContext<MapCodec<? extends ChunkGenerator>> context) {
@@ -158,8 +164,8 @@ public class VeilDimension {
         // Get the Biome holder
         Holder<Biome> biomeHolder = registryAccess
             .registryOrThrow(Registries.BIOME)
-            .getHolder(VeilDimensionRegistry.VEIL_BIOME_1)
-            .orElseThrow(() -> new IllegalStateException("Missing biome: " + VeilDimensionRegistry.VEIL_BIOME_1.location()));
+            .getHolder(VeilDimensionRegistry.CRYSTAL_PEATLANDS_BIOME)
+            .orElseThrow(() -> new IllegalStateException("Missing biome: " + VeilDimensionRegistry.CRYSTAL_PEATLANDS_BIOME.location()));
 
         FixedBiomeSource biomeSource = new FixedBiomeSource(biomeHolder);
 
@@ -172,37 +178,58 @@ public class VeilDimension {
             0,    // minY
             128,  // height
             1,    // sizeHorizontal
-            1
+            1 //sizeVertical
         );
 
-        SurfaceRules.RuleSource voidSurface = SurfaceRules.sequence(SurfaceRules.state(Blocks.AIR.defaultBlockState()));
+        HolderGetter<NormalNoise.NoiseParameters> noiseParameters = context.lookup(Registries.NOISE);
         NoiseRouter router = new NoiseRouter(
-            DensityFunctions.constant(0.0D), // barrierNoise
-            DensityFunctions.constant(0.0D), // fluidLevelFloodednessNoise
-            DensityFunctions.constant(0.0D), // fluidLevelSpreadNoise
-            DensityFunctions.constant(0.0D), // lavaNoise
-            DensityFunctions.constant(0.0D), // temperature
-            DensityFunctions.constant(0.0D), // vegetation
-            DensityFunctions.constant(0.0D), // continents
-            DensityFunctions.constant(0.0D), // erosion
-            DensityFunctions.constant(0.0D), // depth
-            DensityFunctions.constant(0.0D), // ridges
-            DensityFunctions.constant(0.0D), // initialDensityWithoutJaggedness
-            DensityFunctions.constant(0.0D), // finalDensity
-            DensityFunctions.constant(0.0D), // veinToggle
-            DensityFunctions.constant(0.0D), // veinRidged
-            DensityFunctions.constant(0.0D)  // veinGap
+            DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_BARRIER), 1.0),
+            DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_FLUID_LEVEL_FLOODEDNESS), 1.0),
+            DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_FLUID_LEVEL_SPREAD), 1.0),
+            DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_LAVA), 1.0),
+
+            DensityFunctions.noise(noiseParameters.getOrThrow(Noises.TEMPERATURE), 0.25),
+            DensityFunctions.noise(noiseParameters.getOrThrow(Noises.VEGETATION), 0.25),
+            DensityFunctions.noise(noiseParameters.getOrThrow(Noises.CONTINENTALNESS), 1.0), // full freq
+            DensityFunctions.noise(noiseParameters.getOrThrow(Noises.EROSION), 0.5),
+
+            // Depth: gentle variation
+            DensityFunctions.add(
+                DensityFunctions.mul(
+                    DensityFunctions.noise(noiseParameters.getOrThrow(Noises.RIDGE), 1.0D),
+                    DensityFunctions.constant(2.0D)
+                ),
+                DensityFunctions.constant(0.0D)
+            ),
+
+            DensityFunctions.noise(noiseParameters.getOrThrow(Noises.JAGGED), 0.25), // low jaggedness
+
+            DensityFunctions.add(
+                DensityFunctions.mul(
+                    DensityFunctions.noise(noiseParameters.getOrThrow(Noises.CONTINENTALNESS_LARGE), 1.0D),
+                    DensityFunctions.constant(0.5D)
+                ),
+                DensityFunctions.constant(0.0D)
+            ),
+
+            DensityFunctions.add(
+                DensityFunctions.mul(DensityFunctions.noise(noiseParameters.getOrThrow(Noises.EROSION_LARGE), 1.0D), DensityFunctions.constant(16.0D)),
+                DensityFunctions.constant(60.0D)
+            ),
+            DensityFunctions.noise(noiseParameters.getOrThrow(Noises.ORE_VEININESS), 1.0D),
+            DensityFunctions.noise(noiseParameters.getOrThrow(Noises.ORE_VEIN_A), 1.0D),
+            DensityFunctions.noise(noiseParameters.getOrThrow(Noises.ORE_GAP), 1.0D)
         );
         // Create the NoiseGeneratorSettings record
         NoiseGeneratorSettings generatorSettings = new NoiseGeneratorSettings(
             noiseSettings,
-            Blocks.STONE.defaultBlockState(),
-            Fluids.FLOWING_WATER.defaultFluidState().createLegacyBlock(),
+            VeilBlocks.VEILSTONE.get().defaultBlockState(),
+            Blocks.AIR.defaultBlockState(),
             router,
-            voidSurface,
+            CrystalPeatlands.makeSurfaceRules(),
             List.of(),
-            63,                                               // sea level
-            false,                                            // disable mob generation
+            60,                                               // sea level
+            true,                                            // disable mob generation
             false,                                            // aquifers enabled
             false,                                            // ore veins enabled
             false                                             // use legacy random source

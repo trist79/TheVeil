@@ -15,7 +15,8 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Lifecycle;
-import com.trist79.veil.common.registry.VeilItemRegistry;
+import com.trist79.veil.common.data.blocks.VeilBlocks;
+import com.trist79.veil.common.items.VeilItems;
 import com.trist79.veil.common.world.VeilDimension;
 import com.trist79.veil.common.world.VeilDimensionRegistry;
 
@@ -45,7 +46,8 @@ public class TheVeilMod {
         modEventBus.addListener(this::commonSetup);
         //modEventBus.addListener(VeilDataGenerators::gatherData);
         //NeoForge.EVENT_BUS.register(this);
-        VeilItemRegistry.register(modEventBus);
+        VeilItems.register(modEventBus);
+        VeilBlocks.register(modEventBus);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
@@ -64,14 +66,16 @@ public class TheVeilMod {
         }
 
         ServerLevel overworld = server.getLevel(server.overworld().dimension());
-        LevelStem runtimeStem = VeilDimension.bootstrapRuntimeStem(overworld);
-        // Register the stem at runtime
-        RegistrationInfo runtimeInfo = new RegistrationInfo(Optional.empty(), Lifecycle.stable());
-        stemRegistry.register(
+        if (overworld != null) {
+            LevelStem runtimeStem = VeilDimension.bootstrapRuntimeStem(overworld);
+            // Register the stem at runtime
+            RegistrationInfo runtimeInfo = new RegistrationInfo(Optional.empty(), Lifecycle.stable());
+            stemRegistry.register(
                 VeilDimensionRegistry.THE_VEIL_STEM,
                 runtimeStem,
                 runtimeInfo
-        );
+            );
+        }
     }
 }
 

@@ -4,7 +4,7 @@
     "type": "minecraft:noise",
     "biome_source": {
       "type": "minecraft:fixed",
-      "biome": "theveil:veil_biome_1"
+      "biome": "theveil:crystal_peatlands_biome"
     },
     "settings": "theveil:veil_noise_gen"
   }

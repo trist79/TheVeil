@@ -39,8 +39,8 @@ public class VeilDimensionRegistry {
         Registries.LEVEL_STEM, ResourceLocation.fromNamespaceAndPath(TheVeilMod.MODID, "the_veil")
     );
 
-    public static final ResourceKey<Biome> VEIL_BIOME_1 = ResourceKey.create(
-        Registries.BIOME, ResourceLocation.fromNamespaceAndPath(TheVeilMod.MODID, "veil_biome_1")
+    public static final ResourceKey<Biome> CRYSTAL_PEATLANDS_BIOME = ResourceKey.create(
+        Registries.BIOME, ResourceLocation.fromNamespaceAndPath(TheVeilMod.MODID, "crystal_peatlands_biome")
     );
 
     public static final ResourceKey<NoiseGeneratorSettings> VOID_NOISE_GEN_KEY = ResourceKey.create(
