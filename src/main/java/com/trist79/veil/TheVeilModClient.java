@@ -32,7 +32,7 @@ public class TheVeilModClient {
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
         // Some client setup code
-        TheVeilMod.LOGGER.info("HELLO FROM CLIENT SETUP");
+        TheVeilMod.LOGGER.info("Veil Mod Client Setup Starting");
         TheVeilMod.LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
     }
 }

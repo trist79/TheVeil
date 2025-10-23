@@ -15,6 +15,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -44,12 +45,25 @@ public class VeilTeleporter {
 
     //Teleports a player from their current dimension to the veil, or from the veil to their previous dimension
     public Entity placeEntity(Entity entity, ServerLevel world, float yaw, Vec3 targetPos) {
-
-        CompoundTag data = entity.getPersistentData();
-        ServerLevel veilWorld = entity.getServer().getLevel(VeilDimensionRegistry.VEIL_DIM);
-
         ServerLevel destinationWorld;
         Vec3 finalPos;
+
+        CompoundTag data = entity.getPersistentData();
+        MinecraftServer server = entity.getServer();
+
+        // entity.getServer() null check to avoid @nonnull issues
+        if (server == null) {
+            TheVeilMod.LOGGER.error("Entity has no server instance!");
+            return entity;
+        }
+
+        // server.getlevel() null check to avoid @nonnull issues
+        ServerLevel veilWorld = server.getLevel(VeilDimensionRegistry.VEIL_DIM);
+        if (veilWorld == null) {
+            TheVeilMod.LOGGER.error("Veil Dimension does not exist!");
+            return entity;
+        }
+
         if (!world.dimension().location().equals(veilWorld.dimension().location())) {
             // Entering the Veil: save current position and dimension
             CompoundTag prevPos = new CompoundTag();
@@ -74,7 +88,7 @@ public class VeilTeleporter {
             ResourceKey<Level> prevDimKey = ResourceKey.create(
                 Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(locationSplit[0], locationSplit[1])
             );
-            destinationWorld = entity.getServer().getLevel(prevDimKey);
+            destinationWorld = server.getLevel(prevDimKey);
             if (destinationWorld == null) return entity;
 
             finalPos = new Vec3(prevPos.getDouble("x"), prevPos.getDouble("y"), prevPos.getDouble("z"));

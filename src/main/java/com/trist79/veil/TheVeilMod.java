@@ -9,28 +9,18 @@
 
 package com.trist79.veil;
 
-import java.util.Optional;
-
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
-import com.mojang.serialization.Lifecycle;
-import com.trist79.veil.common.registry.VeilItemRegistry;
-import com.trist79.veil.common.world.VeilDimension;
-import com.trist79.veil.common.world.VeilDimensionRegistry;
-
-import net.minecraft.core.RegistrationInfo;
-import net.minecraft.core.WritableRegistry;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.dimension.LevelStem;
+import com.trist79.veil.common.data.blocks.VeilBlocks;
+import com.trist79.veil.common.items.VeilItems;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
 @Mod(value = TheVeilMod.MODID)
@@ -41,11 +31,10 @@ public class TheVeilMod {
         LOGGER.info("Veil Mod Initializing...");
     }
     public TheVeilMod(IEventBus modEventBus, ModContainer modContainer) {
-
+        NeoForge.EVENT_BUS.register(TheVeilMod.class);
         modEventBus.addListener(this::commonSetup);
-        //modEventBus.addListener(VeilDataGenerators::gatherData);
-        //NeoForge.EVENT_BUS.register(this);
-        VeilItemRegistry.register(modEventBus);
+        VeilItems.register(modEventBus);
+        VeilBlocks.register(modEventBus);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
@@ -55,23 +44,9 @@ public class TheVeilMod {
     }
 
     @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-        MinecraftServer server = event.getServer();
-        WritableRegistry<LevelStem> stemRegistry = (WritableRegistry<LevelStem>) server.registryAccess().registryOrThrow(Registries.LEVEL_STEM);
+    public static void onServerStarting(ServerStartingEvent event) {
 
-        if (stemRegistry.get(VeilDimensionRegistry.THE_VEIL_STEM.location()) != null) {
-            return;
-        }
-
-        ServerLevel overworld = server.getLevel(server.overworld().dimension());
-        LevelStem runtimeStem = VeilDimension.bootstrapRuntimeStem(overworld);
-        // Register the stem at runtime
-        RegistrationInfo runtimeInfo = new RegistrationInfo(Optional.empty(), Lifecycle.stable());
-        stemRegistry.register(
-                VeilDimensionRegistry.THE_VEIL_STEM,
-                runtimeStem,
-                runtimeInfo
-        );
     }
+
 }
 

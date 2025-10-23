@@ -12,7 +12,7 @@ package com.trist79.veil.common.data;
 import java.util.concurrent.CompletableFuture;
 import javax.annotation.Nonnull;
 
-import com.trist79.veil.common.registry.VeilItemRegistry;
+import com.trist79.veil.common.items.VeilItems;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -36,7 +36,7 @@ public class VeilRecipeProvider extends RecipeProvider {
             .requires(Items.STICK)
             .unlockedBy("has_stick", has(Items.STICK))
             .save(output);
-        ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, VeilItemRegistry.CRYSTALLIZED_CHORUS_FRUIT.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, VeilItems.CRYSTALLIZED_CHORUS_FRUIT.get())
             .pattern(" A ")
             .pattern("ABA")
             .pattern(" A ")

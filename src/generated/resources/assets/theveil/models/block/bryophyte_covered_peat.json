@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "theveil:block/simpleblock/peat",
+    "side": "theveil:block/bryophyte_covered_peat_side",
+    "top": "theveil:block/bryophyte_covered_peat_top"
+  }
+}

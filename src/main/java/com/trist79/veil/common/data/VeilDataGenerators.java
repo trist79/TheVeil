@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import com.trist79.veil.TheVeilMod;
+import com.trist79.veil.common.data.blocks.VeilBlockProvider;
 import com.trist79.veil.common.data.items.VeilItemModelProvider;
 import com.trist79.veil.common.data.loot.VeilLootTableProvider;
 import com.trist79.veil.common.data.tags.VeilBlockTagsProvider;
@@ -34,7 +35,7 @@ public class VeilDataGenerators {
 
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
-        System.out.println("GATHERDATA EVENT FIRED");
+        System.out.println("GatherData Event Fired");
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
@@ -45,11 +46,12 @@ public class VeilDataGenerators {
         generator.addProvider(event.includeServer(), new VeilBlockTagsProvider(output, provider, existingFileHelper));
         generator.addProvider(event.includeServer(), new VeilItemModelProvider(output, existingFileHelper));
         generator.addProvider(event.includeServer(), new VeilLangProvider(output, TheVeilMod.MODID, net.minecraft.locale.Language.DEFAULT));
-
+        generator.addProvider(event.includeServer(), new VeilBlockProvider(output, existingFileHelper));
 
         RegistrySetBuilder builder = new RegistrySetBuilder()
             .add(Registries.DIMENSION_TYPE, VeilDimension::bootstrapDimType)
             .add(Registries.BIOME, VeilDimension::bootstrapBiomes)
+            .add(Registries.NOISE, VeilDimension::bootstrapNoises)
             .add(Registries.NOISE_SETTINGS, VeilDimension::bootstrapNoiseSettings)
             .add(Registries.LEVEL_STEM, VeilDimension::bootstrapLevelStem);
 

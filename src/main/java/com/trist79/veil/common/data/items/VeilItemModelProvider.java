@@ -1,7 +1,8 @@
 package com.trist79.veil.common.data.items;
 
 import com.trist79.veil.TheVeilMod;
-import com.trist79.veil.common.registry.VeilItemRegistry;
+import com.trist79.veil.common.items.VeilItems;
+
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -14,6 +15,6 @@ public class VeilItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        basicItem(VeilItemRegistry.CRYSTALLIZED_CHORUS_FRUIT.get());
+        basicItem(VeilItems.CRYSTALLIZED_CHORUS_FRUIT.get());
     }
 }
