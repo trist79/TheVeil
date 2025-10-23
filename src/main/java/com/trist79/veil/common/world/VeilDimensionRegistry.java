@@ -1,7 +1,7 @@
 /*
  * The Veil Mod
  * File: VeilDimensionRegistry.java
- * Description: Veil Dimension Registry File
+ * Description: Veil Dimension Registry Keys File
  * Copyright (c) 2025 Tristan Anderson
  * Licensed under the MIT License
  */
@@ -20,6 +20,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.world.level.levelgen.synth.NormalNoise.NoiseParameters;
 
 public class VeilDimensionRegistry {
 
@@ -43,9 +44,26 @@ public class VeilDimensionRegistry {
         Registries.BIOME, ResourceLocation.fromNamespaceAndPath(TheVeilMod.MODID, "crystal_peatlands_biome")
     );
 
-    public static final ResourceKey<NoiseGeneratorSettings> VOID_NOISE_GEN_KEY = ResourceKey.create(
+    public static final ResourceKey<NoiseGeneratorSettings> VEIL_NOISE_GEN_SETTINGS = ResourceKey.create(
         Registries.NOISE_SETTINGS, ResourceLocation.fromNamespaceAndPath(TheVeilMod.MODID, "veil_noise_gen")
     );
+
+    // Register Veil Noises
+    public static final ResourceKey<NoiseParameters> VEIL_NOISE_1 = ResourceKey.create(
+        Registries.NOISE, ResourceLocation.fromNamespaceAndPath(TheVeilMod.MODID, "veil_noise_1")
+    );
+    public static final ResourceKey<NoiseParameters> VEIL_NOISE_2 = ResourceKey.create(
+        Registries.NOISE, ResourceLocation.fromNamespaceAndPath(TheVeilMod.MODID, "veil_noise_2")
+    );
+    public static final ResourceKey<NoiseParameters> VEIL_NOISE_3 = ResourceKey.create(
+        Registries.NOISE, ResourceLocation.fromNamespaceAndPath(TheVeilMod.MODID, "veil_noise_3")
+    );
+    public static final ResourceKey<NoiseParameters> VEIL_NOISE_4 = ResourceKey.create(
+        Registries.NOISE, ResourceLocation.fromNamespaceAndPath(TheVeilMod.MODID, "veil_noise_4")
+    );
+
+
+
 
 }
 

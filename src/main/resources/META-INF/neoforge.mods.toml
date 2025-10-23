@@ -1,11 +1,11 @@
+# This file (META-INF/neoforge.mods.toml) is automatically generated. Only manually update the template.
 modLoader="javafml"
 loaderVersion="[2.0,)"
-license="MIT"
+license="All Rights Reserved"
 
 [[mods]]
 modId="theveil"
-version="0.0.3"
+version="0.0.4"
 displayName="The Veil"
-description='Step into The Veil, a mysterious, ever-shifting dimension filled with echoes, illusions, and hidden secrets.'
+description="Step into The Veil, a mysterious, ever-shifting dimension filled with echoes, illusions, and hidden secrets."
 authors="Tristan Anderson"
-

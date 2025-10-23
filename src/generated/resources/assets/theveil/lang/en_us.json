@@ -1,7 +1,9 @@
 {
+  "biome.theveil:crystal_peatlands_biome": "Crystal Peatlands",
   "block.theveil.bryophyte_covered_peat": "Bryophyte-Covered Peat",
   "block.theveil.gleysol": "Gleysol",
   "block.theveil.peat": "Peat",
   "block.theveil.veilstone": "Veilstone",
+  "dimension.theveil.the_veil": "The Veil",
   "item.theveil.crystallized_chorus_fruit": "Crystallized Chorus Fruit"
 }

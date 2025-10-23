@@ -35,7 +35,7 @@ public class VeilDataGenerators {
 
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
-        System.out.println("GATHERDATA EVENT FIRED");
+        System.out.println("GatherData Event Fired");
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
@@ -51,6 +51,7 @@ public class VeilDataGenerators {
         RegistrySetBuilder builder = new RegistrySetBuilder()
             .add(Registries.DIMENSION_TYPE, VeilDimension::bootstrapDimType)
             .add(Registries.BIOME, VeilDimension::bootstrapBiomes)
+            .add(Registries.NOISE, VeilDimension::bootstrapNoises)
             .add(Registries.NOISE_SETTINGS, VeilDimension::bootstrapNoiseSettings)
             .add(Registries.LEVEL_STEM, VeilDimension::bootstrapLevelStem);
 

@@ -7,38 +7,17 @@
  */
 
 package com.trist79.veil.common.world;
-
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
+
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.trist79.veil.common.data.blocks.VeilBlocks;
-import com.trist79.veil.common.world.biomes.CrystalPeatlands;
-
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.world.level.LevelHeightAccessor;
-import net.minecraft.world.level.NoiseColumn;
-import net.minecraft.world.level.StructureManager;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
-import net.minecraft.world.level.levelgen.RandomState;
-import net.minecraft.world.level.levelgen.SurfaceRules;
-import net.minecraft.world.level.levelgen.SurfaceSystem;
-import net.minecraft.world.level.levelgen.blending.Blender;
 
 public class VeilChunkGenerator extends NoiseBasedChunkGenerator {
 
@@ -59,98 +38,26 @@ public class VeilChunkGenerator extends NoiseBasedChunkGenerator {
     }
 
     @Override
-    public void buildSurface(WorldGenRegion region, StructureManager structureManager, RandomState random, ChunkAccess chunk) {
-        // nothing yet
-    }
-    @Override
-    public void applyBiomeDecoration(WorldGenLevel level, ChunkAccess chunk, StructureManager structureManager) {
-        // no decorations
-    }
-
-    @Override
-    public void applyCarvers(WorldGenRegion level, long seed, RandomState random, BiomeManager biomeManager, StructureManager structureManager, ChunkAccess chunk, GenerationStep.Carving step) {
-        // no carvers
-    }
-
-
-    @Override
     protected MapCodec<? extends ChunkGenerator> codec() {
         return  CODEC;
     }
 
-    @Override
-    public void spawnOriginalMobs(WorldGenRegion level) {
-        // Spawn Nothing
-    }
+    // @Override
+    // public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor height, RandomState random) {
+    //     int minY = height.getMinBuildHeight();
+    //     int maxY = height.getMaxBuildHeight();
+    //     int heightSize = maxY - minY;
 
-    @Override
-    public int getGenDepth() {
-        return 256;
-    }
+    //     // Create a block array
+    //     var blocks = new net.minecraft.world.level.block.state.BlockState[heightSize];
 
-    @Override
-    public CompletableFuture<ChunkAccess> fillFromNoise(Blender blender, RandomState randomState,
-            StructureManager structureManager, ChunkAccess chunk) {
+    //     // Bedrock at bottom
+    //     blocks[0] = Blocks.BEDROCK.defaultBlockState();
 
-        int chunkX = chunk.getPos().getMinBlockX();
-        int chunkZ = chunk.getPos().getMinBlockZ();
-        int minY = chunk.getMinBuildHeight();
-
-        // Fill only the bottom layer with bedrock
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
-                chunk.setBlockState(
-                    new BlockPos(chunkX + x, minY + 1, chunkZ + z),
-                    Blocks.BEDROCK.defaultBlockState(),
-                    false
-                );
-            }
-        }
-
-    // Everything above remains air by default
-
-    // Return a completed future
-    return CompletableFuture.completedFuture(chunk);
-}
-
-    @Override
-    public int getSeaLevel() {
-        return 0;
-    }
-
-    @Override
-    public int getMinY() {
-        return 0;
-    }
-
-    @Override
-    public int getBaseHeight(int x, int z, Types type, LevelHeightAccessor level, RandomState random) {
-        return 1;
-    }
-
-    @Override
-    public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor height, RandomState random) {
-        int minY = height.getMinBuildHeight();
-        int maxY = height.getMaxBuildHeight();
-        int heightSize = maxY - minY;
-
-        // Create a block array
-        var blocks = new net.minecraft.world.level.block.state.BlockState[heightSize];
-
-        // Bedrock at bottom
-        blocks[0] = Blocks.BEDROCK.defaultBlockState();
-
-        // Fill the rest with your base terrain (Veilstone)
-        for (int y = 1; y < heightSize; y++) {
-            blocks[y] = VeilBlocks.VEILSTONE.get().defaultBlockState();
-        }
-
-        return new NoiseColumn(minY, blocks);
-    }
-
-
-    @Override
-    public void addDebugScreenInfo(List<String> info, RandomState random, BlockPos pos) {
-        // No, I don't think I will
-    }
+    //     // Fill the rest with your base terrain (Veilstone)
+    //     for (int y = 1; y < heightSize; y++) {
+    //         blocks[y] = VeilBlocks.VEILSTONE.get().defaultBlockState();
+    //     }
+    //     return new NoiseColumn(minY, blocks);
+    // }
 }
