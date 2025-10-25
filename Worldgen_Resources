@@ -1,0 +1,57 @@
+Guides to worldgen
+https://minecraft.wiki/w/Custom_world_generation
+
+This website allows you to generate many types of datapacks files (including everything worldgen related) so you don't have to manually type out json configuration for everything
+https://misode.github.io/
+
+This website (Snowcapped) lets you interact with biome layouts and splines:
+https://snowcapped.jacobsjo.eu/
+
+Snowcapped wiki: https://github.com/jacobsjo/snowcapped/wiki
+
+This website lets you edit density functions visually so you can see how density functions connect
+https://df-editor.jacobsjo.eu/1_19/
+
+This Github repository has all of the default worldgen files https://github.com/misode/mcmeta/tree/data-json
+
+This video explains how 1.18 terrain generation is done in a nutshell:
+https://www.youtube.com/watch?v=CSa5O6knuwI
+
+This video explains how to add new dimensions in 1.18.2 (use https://misode.github.io/ to generate files for 1.19): 
+https://www.youtube.com/watch?v=7x4orazkO_s
+
+This guide explains how to add single piece structures into worldgen:
+https://misode.github.io/guides/adding-custom-structures/
+
+Another guide for making structures:
+https://gist.github.com/GentlemanRevvnar/387f9ee28613715c187a36dbc1dff35d
+
+This guide explains the basics of the noise router:
+https://misode.github.io/guides/noise-router/
+
+This guide explains how placed features work and all of their configurations:
+https://misode.github.io/guides/placed-features/ 
+
+WorldgenDevTools: 
+ https://modrinth.com/mod/worldgen-devtools
+
+
+> This guide explains how to add single piece structures into worldgen:
+> https://misode.github.io/guides/adding-custom-structures/
+
+Moved to:
+https://minecraft.wiki/w/Tutorial:Custom_structures
+
+> This guide explains the basics of the noise router:
+> https://misode.github.io/guides/noise-router/
+
+Moved to:
+https://minecraft.wiki/w/Noise_router#Final_density
+
+> This guide explains how placed features work and all of their configurations:
+> https://misode.github.io/guides/placed-features/ 
+
+Moved to:
+https://minecraft.wiki/w/Placed_feature
+
+https://discord.com/channels/313125603924639766/1249305774987939900/1375466991443509248
