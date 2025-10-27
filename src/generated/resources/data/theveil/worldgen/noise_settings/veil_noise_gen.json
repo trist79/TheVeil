@@ -15,7 +15,7 @@
     "height": 384,
     "min_y": -64,
     "size_horizontal": 1,
-    "size_vertical": 2
+    "size_vertical": 1
   },
   "noise_router": {
     "barrier": {
@@ -59,9 +59,9 @@
       "type": "minecraft:add",
       "argument1": {
         "type": "minecraft:y_clamped_gradient",
-        "from_value": 0.3,
+        "from_value": 0.25,
         "from_y": -64,
-        "to_value": -0.3,
+        "to_value": -0.25,
         "to_y": 512
       },
       "argument2": {
@@ -76,37 +76,63 @@
             "to_y": 256
           },
           "argument2": {
-            "type": "minecraft:mul",
-            "argument1": 0.5,
-            "argument2": {
-              "type": "minecraft:add",
-              "argument1": {
+            "type": "minecraft:add",
+            "argument1": {
+              "type": "minecraft:mul",
+              "argument1": 0.3,
+              "argument2": {
                 "type": "minecraft:noise",
                 "noise": "theveil:veil_noise_1",
                 "xz_scale": 1.0,
                 "y_scale": 1.0
-              },
+              }
+            },
+            "argument2": {
+              "type": "minecraft:mul",
+              "argument1": 0.6,
               "argument2": {
-                "type": "minecraft:mul",
-                "argument1": 0.5,
-                "argument2": {
-                  "type": "minecraft:noise",
-                  "noise": "theveil:veil_noise_2",
-                  "xz_scale": 1.0,
-                  "y_scale": 1.0
-                }
+                "type": "minecraft:noise",
+                "noise": "theveil:veil_noise_2",
+                "xz_scale": 1.0,
+                "y_scale": 1.0
               }
             }
           }
         },
         "argument2": {
-          "type": "minecraft:mul",
-          "argument1": 0.5,
+          "type": "minecraft:add",
+          "argument1": {
+            "type": "minecraft:mul",
+            "argument1": 0.25,
+            "argument2": {
+              "type": "minecraft:noise",
+              "noise": "theveil:veil_noise_3",
+              "xz_scale": 1.0,
+              "y_scale": 1.0
+            }
+          },
           "argument2": {
-            "type": "minecraft:noise",
-            "noise": "theveil:veil_noise_3",
-            "xz_scale": 1.0,
-            "y_scale": 1.0
+            "type": "minecraft:add",
+            "argument1": {
+              "type": "minecraft:mul",
+              "argument1": 0.5,
+              "argument2": {
+                "type": "minecraft:noise",
+                "noise": "theveil:veil_noise_2",
+                "xz_scale": 1.0,
+                "y_scale": 1.0
+              }
+            },
+            "argument2": {
+              "type": "minecraft:mul",
+              "argument1": 0.1,
+              "argument2": {
+                "type": "minecraft:noise",
+                "noise": "theveil:veil_noise_4",
+                "xz_scale": 1.0,
+                "y_scale": 1.0
+              }
+            }
           }
         }
       }
@@ -133,25 +159,25 @@
         "to_y": 256
       },
       "argument2": {
-        "type": "minecraft:mul",
-        "argument1": 0.5,
-        "argument2": {
-          "type": "minecraft:add",
-          "argument1": {
+        "type": "minecraft:add",
+        "argument1": {
+          "type": "minecraft:mul",
+          "argument1": 0.3,
+          "argument2": {
             "type": "minecraft:noise",
             "noise": "theveil:veil_noise_1",
             "xz_scale": 1.0,
             "y_scale": 1.0
-          },
+          }
+        },
+        "argument2": {
+          "type": "minecraft:mul",
+          "argument1": 0.6,
           "argument2": {
-            "type": "minecraft:mul",
-            "argument1": 0.5,
-            "argument2": {
-              "type": "minecraft:noise",
-              "noise": "theveil:veil_noise_2",
-              "xz_scale": 1.0,
-              "y_scale": 1.0
-            }
+            "type": "minecraft:noise",
+            "noise": "theveil:veil_noise_2",
+            "xz_scale": 1.0,
+            "y_scale": 1.0
           }
         }
       }

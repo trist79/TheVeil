@@ -146,10 +146,10 @@ public class VeilDimension {
     }
 
     public static void bootstrapNoises(BootstrapContext<NoiseParameters> context) {
-        context.register(VeilDimensionRegistry.VEIL_NOISE_1, new NoiseParameters(-6, DoubleList.of(1.0, 0.5, 0.25)));
-        context.register(VeilDimensionRegistry.VEIL_NOISE_2, new NoiseParameters(-6, DoubleList.of(1.0, 0.5, 0.25)));
-        context.register(VeilDimensionRegistry.VEIL_NOISE_3, new NoiseParameters(-6, DoubleList.of(1.0, 0.5, 0.25)));
-        context.register(VeilDimensionRegistry.VEIL_NOISE_4, new NoiseParameters(-6, DoubleList.of(1.0, 0.5, 0.25)));
+        context.register(VeilDimensionRegistry.VEIL_NOISE_1, new NoiseParameters(-9, DoubleList.of(1, 2, 2, 1, 2, 1))); //continentalness
+        context.register(VeilDimensionRegistry.VEIL_NOISE_2, new NoiseParameters(-3, DoubleList.of(1, 1, 0, 1))); // offset
+        context.register(VeilDimensionRegistry.VEIL_NOISE_3, new NoiseParameters(-9, DoubleList.of(1, 1, 1, 1, 1))); // erosion
+        context.register(VeilDimensionRegistry.VEIL_NOISE_4, new NoiseParameters(-6, DoubleList.of(2, 1, 1, 0, 0, 0))); // ridge
     }
 
     public static void bootstrapNoiseSettings(BootstrapContext<NoiseGeneratorSettings> context) {
@@ -158,41 +158,92 @@ public class VeilDimension {
             -64,    // minY
             384,  // Total height
             1,    // sizeHorizontal (0 to 4)
-            2 // sizeVertical (0 to 4)
+            1 // sizeVertical (0 to 4)
         );
 
+
+
+
+
+
         HolderGetter<NoiseParameters> noiseParameters = context.lookup(Registries.NOISE);
-
-
-
-        DensityFunction scaledNoise =
-            DensityFunctions.mul( // mull 1
-                DensityFunctions.constant(0.5),
-                DensityFunctions.add( // add 1
-                    DensityFunctions.noise(noiseParameters.getOrThrow(VeilDimensionRegistry.VEIL_NOISE_1)),
-                    DensityFunctions.mul( // mull 2
-                        DensityFunctions.constant(0.5),
-                        DensityFunctions.noise(noiseParameters.getOrThrow(VeilDimensionRegistry.VEIL_NOISE_2))
-                    ) // mull 2
-                ) // add 1
+        DensityFunction veilOffsetA =
+            DensityFunctions.flatCache(
+                DensityFunctions.cache2d(
+                    DensityFunctions.shiftA(noiseParameters.getOrThrow(VeilDimensionRegistry.VEIL_NOISE_2))
+                )
             );
+        DensityFunction veilOffsetB =
+            DensityFunctions.flatCache(
+                DensityFunctions.cache2d(
+                    DensityFunctions.shiftB(noiseParameters.getOrThrow(VeilDimensionRegistry.VEIL_NOISE_2))
+                )
+            );
+        DensityFunction veilContinents =
+            DensityFunctions.flatCache(
+                DensityFunctions.shiftedNoise2d(
+                    veilOffsetA,
+                    veilOffsetB,
+                    0.25, noiseParameters.getOrThrow(VeilDimensionRegistry.VEIL_NOISE_1))
+            );
+
+        DensityFunction veilDepth =
+            DensityFunctions.add(DensityFunctions.yClampedGradient(-64, 320, -1.75, -1.75), veilContinents)
+        ;
+        DensityFunction veilErosion;
+        DensityFunction veilRidges;
+
+
+
+
+
+
+
+/*
+
+        DensityFunction baseNoise =
+            DensityFunctions.add( // add 1
+            // VEIL_NOISE_1: primary terrain shape
+                DensityFunctions.mul( // mul 1
+                    DensityFunctions.constant(0.3),
+                    DensityFunctions.noise(noiseParameters.getOrThrow(VeilDimensionRegistry.VEIL_NOISE_1))
+                ), // mul 1
+            // VEIL_NOISE_2: secondary shaping with smaller features
+                DensityFunctions.mul( // mul 2
+                    DensityFunctions.constant(0.6),
+                    DensityFunctions.noise(noiseParameters.getOrThrow(VeilDimensionRegistry.VEIL_NOISE_2))
+                ) // mull 2
+            ); // add 1
+
         DensityFunction initialDensity =
             DensityFunctions.add( // add 1
                 DensityFunctions.yClampedGradient(-64, 256, 1.5, -1.0), // steeper density curve
-                scaledNoise
+                baseNoise
             ); // add 1
 
         DensityFunction jaggedness =
-            DensityFunctions.mul( // mul 1
-                DensityFunctions.constant(0.5),
-                DensityFunctions.noise(noiseParameters.getOrThrow(VeilDimensionRegistry.VEIL_NOISE_3))
-            ); //mull 1
+            DensityFunctions.add( // add 1
+                DensityFunctions.mul( // mul 1
+                        DensityFunctions.constant(0.25),
+                        DensityFunctions.noise(noiseParameters.getOrThrow(VeilDimensionRegistry.VEIL_NOISE_3))
+                ), // mul 1
+                DensityFunctions.add( //add 2
+                    DensityFunctions.mul( // mul 2
+                            DensityFunctions.constant(0.50),
+                            DensityFunctions.noise(noiseParameters.getOrThrow(VeilDimensionRegistry.VEIL_NOISE_2))
+                    ), // mul 2
+                    DensityFunctions.mul( // mul 3
+                            DensityFunctions.constant(0.10),
+                            DensityFunctions.noise(noiseParameters.getOrThrow(VeilDimensionRegistry.VEIL_NOISE_4))
+                    ) // mul 3
+                ) // add  2
+            ); // add 1
 
         DensityFunction finalDensity =
         DensityFunctions.add(
-            DensityFunctions.yClampedGradient(-64, 512, 0.3, -0.3),
+            DensityFunctions.yClampedGradient(-64, 512, 0.25, -0.25),
             DensityFunctions.add(initialDensity, jaggedness)
-        );
+        ); */
 
 
         NoiseRouter router = new NoiseRouter( // Density Functions for Terrain Generation - see https://minecraft.wiki/w/World_generation#Randomness
@@ -201,25 +252,25 @@ public class VeilDimension {
             DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_FLUID_LEVEL_SPREAD), 5.0/7.0), // AQUIFER - Fluid Level Spread
             DensityFunctions.noise(noiseParameters.getOrThrow(Noises.AQUIFER_LAVA), 1.0), // AQUIFER - Lava overriding water for aquifers
             DensityFunctions.shiftedNoise2d(
-                DensityFunctions.shiftA(noiseParameters.getOrThrow(Noises.SHIFT)),
-                DensityFunctions.shiftB(noiseParameters.getOrThrow(Noises.SHIFT)),
+                veilOffsetA,
+                veilOffsetB,
                 0.25, noiseParameters.getOrThrow(Noises.TEMPERATURE)), // BIOME - Temperature Map, mimics vanilla
             DensityFunctions.shiftedNoise2d(
-                DensityFunctions.shiftA(noiseParameters.getOrThrow(Noises.SHIFT)),
-                DensityFunctions.shiftB(noiseParameters.getOrThrow(Noises.SHIFT)),
+                veilOffsetA,
+                veilOffsetB,
                 0.25, noiseParameters.getOrThrow(Noises.VEGETATION)), // BIOME - Vegetation map
             DensityFunctions.shiftedNoise2d(
-                DensityFunctions.shiftA(noiseParameters.getOrThrow(Noises.SHIFT)),
-                DensityFunctions.shiftB(noiseParameters.getOrThrow(Noises.SHIFT)),
+                veilOffsetA,
+                veilOffsetB,
                 0.25, noiseParameters.getOrThrow(Noises.CONTINENTALNESS)),// BIOME - Continents
             DensityFunctions.shiftedNoise2d(
-                DensityFunctions.shiftA(noiseParameters.getOrThrow(Noises.SHIFT)),
-                DensityFunctions.shiftB(noiseParameters.getOrThrow(Noises.SHIFT)),
+                veilOffsetA,
+                veilOffsetB,
                 0.25, noiseParameters.getOrThrow(Noises.EROSION)), // BIOME - Erosion map
             DensityFunctions.constant(0.0), // BIOME - Depth map (0.0 for overworld)
             DensityFunctions.shiftedNoise2d(
-                DensityFunctions.shiftA(noiseParameters.getOrThrow(Noises.SHIFT)),
-                DensityFunctions.shiftB(noiseParameters.getOrThrow(Noises.SHIFT)),
+                veilOffsetA,
+                veilOffsetB,
                 0.25, noiseParameters.getOrThrow(Noises.RIDGE)), // BIOME - Ridge (Weirdness) map
             initialDensity, // TERRAIN - Initial Density (without Jaggedness)
             finalDensity, // TERRAIN - Final Density
